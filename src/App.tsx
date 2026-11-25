@@ -1,31 +1,116 @@
 import { useState } from 'react';
+import type { Product } from './types/product';
+import { ProductCard } from './components/ProductCard';
 
 export default function App() {
-  const [student] = useState({
-    id: '69409010902',
-    name: 'นายธนกร กลีบใบ',
-    level: 'ปริญญาตรี เทคโนโลยีสารสนเทศ วิทยาลัยอาชีวศึกษาอุดรธานี'
-  });
+  const [cartCount, setCartCount] = useState(0);
+  const [lastAdded, setLastAdded] = useState<string | null>(null);
+
+  const [mockProducts] = useState<Product[]>([
+    {
+      _id: '1',
+      name: 'เสื้อช็อปปฏิบัติการ UDVC',
+      price: 350,
+      description: 'เนื้อผ้าคอตตอนคุณภาพดี ระบายความร้อน เหมาะสำหรับงานช่างและคอมพิวเตอร์',
+      category: { _id: 'cat-apparel', name: 'เครื่องแต่งกาย' },
+      image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=500',
+      stock: 25
+    },
+    {
+      _id: '2',
+      name: 'สมุดบันทึกแล็บไอที 2026',
+      price: 60,
+      description: 'กระดาษถนอมสายตา 100 แผ่น พร้อมตารางสรุปไวยากรณ์ TypeScript',
+      category: { _id: 'cat-stationery', name: 'อุปกรณ์การเรียน' },
+      image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500',
+      stock: 50
+    },
+    {
+      _id: '3',
+      name: 'เมาส์ไร้สายสำหรับเขียนโค้ด',
+      price: 590,
+      description: 'ดีไซน์จับถนัดมือ เสียงคลิกเงียบ เชื่อมต่อได้ทั้ง Bluetooth และ USB Receiver',
+      category: { _id: 'cat-tech', name: 'อุปกรณ์ไอที' },
+      image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500',
+      stock: 15
+    }
+  ]);
+
+  const handleAddToCart = (product: Product) => {
+    setCartCount((prev) => prev + 1);
+    setLastAdded(product.name);
+    alert(`เพิ่ม ${product.name} แล้ว!`);
+  };
 
   return (
-    <div style={{ maxWidth: '840px', margin: '40px auto', padding: '24px', fontFamily: 'sans-serif' }}>
-      <header style={{ borderBottom: '2px solid #2563eb', paddingBottom: '16px', marginBottom: '24px' }}>
-        <h1 style={{ color: '#1e3a8a', margin: 0 }}>🏬 Campus Shop 2026</h1>
-        <p style={{ color: '#64748b', marginTop: '6px' }}>
-          วิชาการพัฒนาเว็บแอพพลิเคชันขั้นสูง (24-40901-2103)
-        </p>
+    <div style={{ maxWidth: '960px', margin: '32px auto', padding: '24px' }}>
+      <header
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: '16px',
+          borderBottom: '2px solid #dbeafe',
+          paddingBottom: '18px',
+          marginBottom: '24px'
+        }}
+      >
+        <div>
+          <h1 style={{ color: '#1e3a8a', margin: 0, fontSize: '1.75rem' }}>
+            🏬 Campus Shop 2026 — รายการสินค้าแนะนำ
+          </h1>
+          <p style={{ color: '#64748b', margin: '6px 0 0', fontSize: '0.92rem' }}>
+            พัฒนาโดย นายธนกร กลีบใบ (69409010902) • สัปดาห์ที่ 4: ProductCard Component
+          </p>
+        </div>
+
+        <div
+          style={{
+            background: '#eff6ff',
+            border: '1px solid #bfdbfe',
+            color: '#1e3a8a',
+            padding: '10px 16px',
+            borderRadius: '12px',
+            fontWeight: 700,
+            fontSize: '0.92rem'
+          }}
+        >
+          🛒 ตะกร้าสินค้า: {cartCount} ชิ้น
+        </div>
       </header>
 
-      <main style={{ background: '#f8fafc', padding: '24px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-        <h2 style={{ fontSize: '1.15rem', color: '#0f172a', marginTop: 0 }}>
-          👨‍💻 บัตรประจำตัวนักพัฒนา (Developer Identity Card)
-        </h2>
-        <div style={{ lineHeight: '1.8', color: '#334155', fontSize: '0.95rem' }}>
-          <div><strong>รหัสนักศึกษา:</strong> {student.id}</div>
-          <div><strong>ชื่อ-สกุล:</strong> {student.name}</div>
-          <div><strong>ระดับการศึกษา:</strong> {student.level}</div>
+      {lastAdded && (
+        <div
+          style={{
+            background: '#ecfdf5',
+            border: '1px solid #a7f3d0',
+            color: '#065f46',
+            padding: '10px 14px',
+            borderRadius: '10px',
+            marginBottom: '18px',
+            fontSize: '0.9rem'
+          }}
+        >
+          เพิ่ม "{lastAdded}" ลงในตะกร้าเรียบร้อยแล้ว
         </div>
-      </main>
+      )}
+
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+          gap: '22px'
+        }}
+      >
+        {mockProducts.map((product) => (
+          <ProductCard
+            key={product._id}
+            product={product}
+            onAddToCart={handleAddToCart}
+          />
+        ))}
+      </div>
     </div>
   );
 }

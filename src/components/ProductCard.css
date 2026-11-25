@@ -1,0 +1,113 @@
+.product-card {
+  --card-bg: #ffffff;
+  --card-border: #dbeafe;
+  --card-radius: 16px;
+  --card-shadow: 0 6px 14px -3px rgba(30, 58, 138, 0.08);
+  --price-color: #1d4ed8;
+  --btn-bg: #1e3a8a;
+  --btn-hover: #2563eb;
+
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: #93c5fd;
+  box-shadow: 0 14px 24px -6px rgba(30, 58, 138, 0.16);
+}
+
+.product-card-image-wrap {
+  width: 100%;
+  height: 190px;
+  background: #f1f5f9;
+  overflow: hidden;
+}
+
+.product-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-card-image {
+  transform: scale(1.05);
+}
+
+.product-card-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.product-card-category {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.72rem;
+  color: #1e40af;
+  background: #eff6ff;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.product-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 8px 0;
+}
+
+.product-card-desc {
+  font-size: 0.85rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
+  flex: 1;
+}
+
+.product-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.product-card-price {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--price-color);
+}
+
+.product-card-btn {
+  background: var(--btn-bg);
+  color: #ffffff;
+  border: none;
+  padding: 9px 15px;
+  border-radius: 10px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.product-card-btn:hover {
+  background: var(--btn-hover);
+}
+
+.product-card-btn:active {
+  transform: scale(0.97);
+}
