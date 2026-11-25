@@ -4,11 +4,12 @@ import { ProductCard } from './components/ProductCard';
 
 export default function App() {
   const [cartCount, setCartCount] = useState(0);
-  const [lastAdded, setLastAdded] = useState<string | null>(null);
+  const [totalSpent, setTotalSpent] = useState(0);
+  const [lastAddedMessage, setLastAddedMessage] = useState<string | null>(null);
 
   const [mockProducts] = useState<Product[]>([
     {
-      _id: '1',
+      _id: 'prod-001',
       name: 'เสื้อช็อปปฏิบัติการ UDVC',
       price: 350,
       description: 'เนื้อผ้าคอตตอนคุณภาพดี ระบายความร้อน เหมาะสำหรับงานช่างและคอมพิวเตอร์',
@@ -17,7 +18,7 @@ export default function App() {
       stock: 25
     },
     {
-      _id: '2',
+      _id: 'prod-002',
       name: 'สมุดบันทึกแล็บไอที 2026',
       price: 60,
       description: 'กระดาษถนอมสายตา 100 แผ่น พร้อมตารางสรุปไวยากรณ์ TypeScript',
@@ -26,7 +27,7 @@ export default function App() {
       stock: 50
     },
     {
-      _id: '3',
+      _id: 'prod-003',
       name: 'เมาส์ไร้สายสำหรับเขียนโค้ด',
       price: 590,
       description: 'ดีไซน์จับถนัดมือ เสียงคลิกเงียบ เชื่อมต่อได้ทั้ง Bluetooth และ USB Receiver',
@@ -36,10 +37,12 @@ export default function App() {
     }
   ]);
 
-  const handleAddToCart = (product: Product) => {
-    setCartCount((prev) => prev + 1);
-    setLastAdded(product.name);
-    alert(`เพิ่ม ${product.name} แล้ว!`);
+  const handleAddToCart = (product: Product, quantity: number) => {
+    setCartCount((prev) => prev + quantity);
+    setTotalSpent((prev) => prev + product.price * quantity);
+    setLastAddedMessage(
+      `เพิ่ม "${product.name}" จำนวน ${quantity} ชิ้น (฿${(product.price * quantity).toLocaleString('th-TH')}) ลงในตะกร้าแล้ว`
+    );
   };
 
   return (
@@ -58,29 +61,29 @@ export default function App() {
       >
         <div>
           <h1 style={{ color: '#1e3a8a', margin: 0, fontSize: '1.75rem' }}>
-            🏬 Campus Shop 2026 — รายการสินค้าแนะนำ
+            🏬 Campus Shop Interactivity
           </h1>
           <p style={{ color: '#64748b', margin: '6px 0 0', fontSize: '0.92rem' }}>
-            พัฒนาโดย นายธนกร กลีบใบ (69409010902) • สัปดาห์ที่ 4: ProductCard Component
+            พัฒนาโดย นายธนกร กลีบใบ (69409010902) • สัปดาห์ที่ 5: State Management &amp; QuantityCounter
           </p>
         </div>
 
         <div
           style={{
             background: '#eff6ff',
-            border: '1px solid #bfdbfe',
-            color: '#1e3a8a',
             padding: '10px 16px',
             borderRadius: '12px',
-            fontWeight: 700,
-            fontSize: '0.92rem'
+            border: '1px solid #bfdbfe',
+            color: '#1e3a8a',
+            fontSize: '0.95rem'
           }}
         >
-          🛒 ตะกร้าสินค้า: {cartCount} ชิ้น
+          🛒 ตะกร้า: <strong>{cartCount}</strong> ชิ้น | รวม:{' '}
+          <strong>฿{totalSpent.toLocaleString('th-TH')}</strong>
         </div>
       </header>
 
-      {lastAdded && (
+      {lastAddedMessage && (
         <div
           style={{
             background: '#ecfdf5',
@@ -92,25 +95,27 @@ export default function App() {
             fontSize: '0.9rem'
           }}
         >
-          เพิ่ม "{lastAdded}" ลงในตะกร้าเรียบร้อยแล้ว
+          {lastAddedMessage}
         </div>
       )}
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-          gap: '22px'
-        }}
-      >
-        {mockProducts.map((product) => (
-          <ProductCard
-            key={product._id}
-            product={product}
-            onAddToCart={handleAddToCart}
-          />
-        ))}
-      </div>
+      <main>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+            gap: '22px'
+          }}
+        >
+          {mockProducts.map((product) => (
+            <ProductCard
+              key={product._id}
+              product={product}
+              onAddToCart={handleAddToCart}
+            />
+          ))}
+        </div>
+      </main>
     </div>
   );
 }
